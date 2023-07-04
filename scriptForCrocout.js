@@ -271,9 +271,6 @@ leftBtn.ontouchend = function(){
 };
 
 //Disable context menu when holding down finger
-$(document).on('contextmenu', function (e) {
-    return false;
-});
 
 //Keyboard event handlers
 document.addEventListener('keydown', Keydown);
