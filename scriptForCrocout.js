@@ -3,6 +3,8 @@ const closeBtn = document.getElementById('close-btn');
 const rules = document.getElementById('rules');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const leftBtn = document.getElementById('left-btn');
+const rightBtn = document.getElementById('right-btn');
 
 let score = 0;
 let highScore = 0;
@@ -75,6 +77,9 @@ function drawScore(){
     ctx.font ='20px Arial';
     ctx.fillText(`Score: ${score}` , canvas.width - 100, 30);
     ctx.fillText(`High Score: ${highScore}` , canvas.width - 147, 50);
+    if(highScore === 45) {
+        ctx.fillText(`Nice Job 😎` , canvas.width - 780, 30)
+    }
 }
 
 //Draw bricks on canvas
@@ -167,9 +172,6 @@ function moveBall() {
         if(score > highScore){
             highScore = score;
         }
-        if(highScore === 45) {
-            ctx.fillText(`Nice Job 😎` , canvas.width - 780, 30)
-        }
         score = 0;
     }
 }
@@ -239,6 +241,20 @@ function Keyup(e){
         paddle.dx = 0;
     }
 }
+
+//Phone buttons
+rightBtn.onmousedown = function(){
+    paddle.dx = paddle.speed;
+};
+rightBtn.onmouseup = function(){
+    paddle.dx = 0;
+};
+leftBtn.onmousedown = function(){
+    paddle.dx = -paddle.speed;
+};
+leftBtn.onmouseup = function(){
+    paddle.dx = 0;
+};
 
 //Keyboard event handlers
 document.addEventListener('keydown', Keydown);

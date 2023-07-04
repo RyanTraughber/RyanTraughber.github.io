@@ -69,3 +69,17 @@ border-radius: 5px;
     transform: translateX(0);
 }
 
+.left-btn{
+    position: absolute;
+    bottom: 50px;
+    left: 30px;
+    font-size: 100px;
+}
+
+.right-btn{
+    position: absolute;
+    bottom: 50px;
+    right: 30px;
+    font-size: 100px;
+}
+
