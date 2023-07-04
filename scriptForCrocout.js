@@ -242,7 +242,7 @@ function Keyup(e){
     }
 }
 
-//Phone buttons
+//Virtual buttons for mouse
 rightBtn.onmousedown = function(){
     paddle.dx = paddle.speed;
 };
@@ -253,6 +253,20 @@ leftBtn.onmousedown = function(){
     paddle.dx = -paddle.speed;
 };
 leftBtn.onmouseup = function(){
+    paddle.dx = 0;
+};
+
+//Touch buttons for mobile devices
+rightBtn.ontouchstart = function(){
+    paddle.dx = paddle.speed;
+};
+rightBtn.ontouchcancel = function(){
+    paddle.dx = 0;
+};
+leftBtn.ontouchstart = function(){
+    paddle.dx = -paddle.speed;
+};
+leftBtn.ontouchcancel = function(){
     paddle.dx = 0;
 };
 
