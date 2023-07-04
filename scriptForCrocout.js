@@ -260,13 +260,13 @@ leftBtn.onmouseup = function(){
 rightBtn.ontouchstart = function(){
     paddle.dx = paddle.speed;
 };
-rightBtn.ontouchcancel = function(){
+rightBtn.ontouchend = function(){
     paddle.dx = 0;
 };
 leftBtn.ontouchstart = function(){
     paddle.dx = -paddle.speed;
 };
-leftBtn.ontouchcancel = function(){
+leftBtn.ontouchend = function(){
     paddle.dx = 0;
 };
 
