@@ -26,7 +26,7 @@ const ball = {
 //Create paddle props
 const paddle = {
     x: canvas.width / 2 -40,
-    y: canvas.height -20,
+    y: canvas.height -40,
     w: 80,
     h: 10,
     speed: 4,
@@ -125,8 +125,8 @@ function moveBall() {
     }
     //Paddle collision
     if(
-        ball.x - ball.size > paddle.x &&
-        ball.x + ball.size < paddle.x + paddle.w &&
+        ball.x - ball.size > (paddle.x -15) && //Subtracting extra because the collision was off for some reason
+        ball.x + ball.size < (paddle.x + paddle.w + 15)&& // same as above
         ball.y + ball.size > paddle.y
     ){
         ball.dy = -ball.speed;
@@ -152,8 +152,8 @@ function moveBall() {
         column.forEach(brick => {
             if(brick.visible) {
                 if(
-                    ball.x - ball.size > brick.x && //Left brick side check
-                    ball.x + ball.size < brick.x + brick.w && //Right brick side check
+                    ball.x - ball.size > (brick.x - 15) && //Left brick side check. Subtracting extra because the collision was off for some reason
+                    ball.x + ball.size < (brick.x + brick.w + 15)&& //Right brick side check. Same as above
                     ball.y + ball.size > brick.y && //Top brick side check
                     ball.y - ball.size < brick.y + brick.h //Bottom brick side check
                 ){
@@ -169,9 +169,6 @@ function moveBall() {
     //Hit floor = lose
     if(ball.y + ball.size > canvas.height) {
         showAllBricks();
-        if(score > highScore){
-            highScore = score;
-        }
         score = 0;
     }
 }
@@ -182,6 +179,11 @@ function increaseScore() {
 
     if(score % (brickRowCount * brickRowCount) === 0) {
         showAllBricks();
+    }
+
+    //set highscore
+    if(score > highScore){
+        highScore = score;
     }
 }
 
@@ -269,8 +271,6 @@ leftBtn.ontouchstart = function(){
 leftBtn.ontouchend = function(){
     paddle.dx = 0;
 };
-
-//Disable context menu when holding down finger
 
 //Keyboard event handlers
 document.addEventListener('keydown', Keydown);
