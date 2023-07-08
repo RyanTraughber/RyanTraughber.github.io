@@ -8,6 +8,7 @@ const rightBtn = document.getElementById('right-btn');
 
 let score = 0;
 let highScore = 0;
+let paddleCounter = 0; //For adding to the x for paddleArray
 
 const brickRowCount = 9;
 const brickColumnCount = 5;
@@ -20,18 +21,26 @@ const ball = {
     size: 10,
     speed: 3,
     dx: 0,
-    dy: -1
+    dy: 1
 };
 
 //Create paddle props
 const paddle = {
     x: canvas.width / 2 -40,
     y: canvas.height -40,
-    w: 80,
+    w: 8,
     h: 10,
     speed: 4,
-    dx: 0
+    dx: 0,
+    numPaddles: 10
 };
+
+//Create multiple paddles to put together
+const paddleArray = [];
+for (let i = 0; i < paddle.numPaddles; i++) {
+    paddleArray[i] = paddleCounter;
+    paddleCounter += paddle.w;
+}
 
 //Create brick props
 const brickInfo = {
@@ -63,13 +72,15 @@ function drawBall() {
     ctx.closePath();
 }
 
-//Draw paddle on canvas
+//Draw paddle on canvas. Create 10 of them for different angles
 function drawPaddle() {
+  paddleArray.forEach(paddleGuy => {
     ctx.beginPath();
-    ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
+    ctx.rect((paddle.x + paddleGuy) , paddle.y, paddle.w, paddle.h);
     ctx.fillStyle = '#32CD32';
     ctx.fill();
     ctx.closePath();
+    });
 }
 
 //Draw the score on the canvas
@@ -100,8 +111,8 @@ function movePaddle() {
     paddle.x += paddle.dx;
 
     //Wall detection
-    if(paddle.x + paddle.w > canvas.width){
-        paddle.x = canvas.width - paddle.w;
+    if(paddle.x + paddleArray[paddleArray.length - 1] > canvas.width){
+        paddle.x = canvas.width - paddleArray[paddleArray.length - 1];
     }
 
     if(paddle.x < 0){
@@ -123,29 +134,108 @@ function moveBall() {
     if(ball.y + ball.size > canvas.height || ball.y - ball.size < 0){
         ball.dy *= -1;
     }
-    //Paddle collision
-    if(
-        ball.x - ball.size > (paddle.x -15) && //Subtracting extra because the collision was off for some reason
-        ball.x + ball.size < (paddle.x + paddle.w + 15)&& // same as above
+    //Paddle collision for each section of the paddle
+    if( //far left paddle
+        ball.x - ball.size > (paddle.x - 15) && //Subtracting extra because the collision was off for some reason on the sides
+        ball.x + ball.size < (paddle.x) &&
         ball.y + ball.size > paddle.y
     ){
         ball.dy = -ball.speed;
-
-        //Modify angle
-        let angle = Math.atan2(-ball.dy, ball.dx);
-        angle += (Math.random() * Math.PI / 2 - Math.PI / 4) * BALL_SPIN;
-
-        //Make sure the random number can't be too dramatic. Keep it between 30 degrees and 150 degrees
-        if (angle < Math.PI / 6) {
-            angle = Math.PI / 6
-        } else if (angle > Math.Pi * 5 / 6 ) {
-            angle = Math.PI * 5/6;
-        }
-
-        //Apply random angle to ball
+        angle = Math.PI * 10 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //one away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 8) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 9 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //two away from far left   
+        ball.x - ball.size > (paddle.x - 15) && 
+        ball.x + ball.size < (paddle.x + paddle.w + 16) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 8 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //three away from far left   
+        ball.x - ball.size > (paddle.x - 15) && 
+        ball.x + ball.size < (paddle.x + paddle.w + 24)&& 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 7 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //four away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 40) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 6 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //five away from far left   
+        ball.x - ball.size > (paddle.x - 15) && 
+        ball.x + ball.size < (paddle.x + paddle.w + 40) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 5 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    } else if ( //six away from far left   
+        ball.x - ball.size > (paddle.x - 15) && 
+        ball.x + ball.size < (paddle.x + paddle.w + 48) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 4 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    }else if ( //seven away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 56) &&
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 3 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    }else if ( //eight away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 64) && 
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 2 /11;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+    }else if ( //nine away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 72 + 15)&& // also adding extra so that the right side is forgiving
+        ball.y + ball.size > paddle.y
+    )
+    {
+        ball.dy = -ball.speed;
+        angle = Math.PI * 1 /11;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }
+
 
     //Brick collision
     bricks.forEach(column => {
@@ -197,7 +287,6 @@ function showAllBricks() {
 //Draw everything
 function draw() {
     //Clear canvas
-
     ctx.clearRect(0,0,canvas.width, canvas.height);
 
     drawBall();

@@ -31,6 +31,7 @@ border-radius: 5px;
     background: black;
     color: white;
     border-radius: 5px;
+    touch-action: manipulation;
 }
 
 .btn:focus{
