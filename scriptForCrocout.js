@@ -19,8 +19,8 @@ const ball = {
     y: canvas.height / 2,
     size: 10,
     speed: 3,
-    dx: 3,
-    dy: -3
+    dx: 0,
+    dy: -1
 };
 
 //Create paddle props
@@ -77,7 +77,7 @@ function drawScore(){
     ctx.font ='20px Arial';
     ctx.fillText(`Score: ${score}` , canvas.width - 100, 30);
     ctx.fillText(`High Score: ${highScore}` , canvas.width - 147, 50);
-    if(highScore === 45) {
+    if(highScore >= 45) {
         ctx.fillText(`Nice Job 😎` , canvas.width - 780, 30)
     }
 }
@@ -177,7 +177,7 @@ function moveBall() {
 function increaseScore() {
     score++;
 
-    if(score % (brickRowCount * brickRowCount) === 0) {
+    if(score % (brickRowCount * brickColumnCount) === 0) {
         showAllBricks();
     }
 
