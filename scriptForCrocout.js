@@ -8,8 +8,9 @@ const rightBtn = document.getElementById('right-btn');
 
 let score = 0;
 let highScore = 0;
-let paddleCounter = 0; //For adding to the x for paddleArray
 
+const paddleHitboxWidth = 80 / 11; //80 is the width of the paddle. there are 11 hitboxes for the ball to hit (5 on the left, 1 in the middle, 5 on the right)
+const hitboxPadding = 15;
 const brickRowCount = 9;
 const brickColumnCount = 5;
 const BALL_SPIN = 1; // Ball deflection off of ther paddle (0 = no spin, 1 = high spin)
@@ -28,19 +29,12 @@ const ball = {
 const paddle = {
     x: canvas.width / 2 -40,
     y: canvas.height -40,
-    w: 8,
+    w: 80,
     h: 10,
     speed: 4,
     dx: 0,
     numPaddles: 10
 };
-
-//Create multiple paddles to put together
-const paddleArray = [];
-for (let i = 0; i < paddle.numPaddles; i++) {
-    paddleArray[i] = paddleCounter;
-    paddleCounter += paddle.w;
-}
 
 //Create brick props
 const brickInfo = {
@@ -72,15 +66,14 @@ function drawBall() {
     ctx.closePath();
 }
 
-//Draw paddle on canvas. Create 10 of them for different angles
+//Draw paddle on canvas
 function drawPaddle() {
-  paddleArray.forEach(paddleGuy => {
     ctx.beginPath();
-    ctx.rect((paddle.x + paddleGuy) , paddle.y, paddle.w, paddle.h);
+    ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
     ctx.fillStyle = '#32CD32';
     ctx.fill();
     ctx.closePath();
-    });
+    
 }
 
 //Draw the score on the canvas
@@ -111,8 +104,8 @@ function movePaddle() {
     paddle.x += paddle.dx;
 
     //Wall detection
-    if(paddle.x + paddleArray[paddleArray.length - 1] > canvas.width){
-        paddle.x = canvas.width - paddleArray[paddleArray.length - 1];
+    if(paddle.x + paddle.w > canvas.width){
+        paddle.x = canvas.width - paddle.w;
     }
 
     if(paddle.x < 0){
@@ -127,7 +120,16 @@ function moveBall() {
 
     //Wall collision. Right and left
     if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
-        ball.dx *= -1; //ball.dx = ball.dx * -1
+        ball.dx *= -1; //ball.dx = ball.dx * -1a
+    }
+
+    //Incase the ball gets jammed into the right wall from the paddle
+    if(ball.x + ball.size > canvas.width) {
+        ball.x = canvas.width - ball.size;
+    }
+    //Incase the ball gets jammed into the right wall from the paddle
+    if(ball.x - ball.size < 0) {
+        ball.x = 0 + ball.size;
     }
 
     //Wall collision. Top and Bottom
@@ -136,8 +138,8 @@ function moveBall() {
     }
     //Paddle collision for each section of the paddle
     if( //far left paddle
-        ball.x > (paddle.x - 15) && //Subtracting extra because the collision was off for some reason on the sides
-        ball.x < (paddle.x) &&
+        ball.x > (paddle.x - hitboxPadding) && //Subtracting extra because the collision was off for some reason on the sides
+        ball.x < (paddle.x + paddleHitboxWidth * 1) && // each paddle hitbox (7.27...) will be multipled to increase the range how far right the hitbox goes
         ball.y + ball.size > paddle.y
     ){
         ball.dy = -ball.speed;
@@ -145,8 +147,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //one away from far left   
-        ball.x > (paddle.x - 15) &&
-        ball.x < (paddle.x + paddle.w + 7.27) && 
+        ball.x > (paddle.x - hitboxPadding) &&
+        ball.x < (paddle.x + paddleHitboxWidth * 2) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -155,8 +157,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //two away from far left   
-        ball.x > (paddle.x - 15) && 
-        ball.x < (paddle.x + paddle.w + 14.54) && 
+        ball.x > (paddle.x - hitboxPadding) && 
+        ball.x < (paddle.x + paddleHitboxWidth * 3) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -165,8 +167,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //three away from far left   
-        ball.x > (paddle.x - 15) && 
-        ball.x < (paddle.x + paddle.w + 21.81)&& 
+        ball.x > (paddle.x - hitboxPadding) && 
+        ball.x < (paddle.x + paddleHitboxWidth * 4)&& 
         ball.y + ball.size > paddle.y
     )
     {
@@ -175,8 +177,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //four away from far left   
-        ball.x > (paddle.x - 15) &&
-        ball.x < (paddle.x + paddle.w + 29.08) && 
+        ball.x > (paddle.x - hitboxPadding) &&
+        ball.x < (paddle.x + paddleHitboxWidth * 5) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -185,8 +187,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //five away from far left   
-        ball.x > (paddle.x - 15) && 
-        ball.x < (paddle.x + paddle.w + 36.35) && 
+        ball.x > (paddle.x - hitboxPadding) && 
+        ball.x < (paddle.x + paddleHitboxWidth * 6) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -195,8 +197,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //six away from far left   
-        ball.x > (paddle.x - 15) && 
-        ball.x < (paddle.x + paddle.w + 43.62) && 
+        ball.x > (paddle.x - hitboxPadding) && 
+        ball.x < (paddle.x + paddleHitboxWidth * 7) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -205,8 +207,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //seven away from far left   
-        ball.x > (paddle.x - 15) &&
-        ball.x < (paddle.x + paddle.w + 50.89) &&
+        ball.x > (paddle.x - hitboxPadding) &&
+        ball.x < (paddle.x + paddleHitboxWidth * 8) &&
         ball.y + ball.size > paddle.y
     )
     {
@@ -215,8 +217,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //eight away from far left   
-        ball.x > (paddle.x - 15) &&
-        ball.x < (paddle.x + paddle.w + 58.16) && 
+        ball.x > (paddle.x - hitboxPadding) &&
+        ball.x < (paddle.x + paddleHitboxWidth * 9) && 
         ball.y + ball.size > paddle.y
     )
     {
@@ -225,8 +227,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //nine away from far left   
-        ball.x > (paddle.x - 15) &&
-        ball.x < (paddle.x + paddle.w + 65.43)&&
+        ball.x > (paddle.x - hitboxPadding) &&
+        ball.x < (paddle.x + paddleHitboxWidth * 10)&&
         ball.y + ball.size > paddle.y
     )
     {
@@ -235,8 +237,8 @@ function moveBall() {
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //10 away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 72.7 + 15)&& // also adding extra so that the right side is forgiving
+        ball.x - ball.size > (paddle.x - hitboxPadding) &&
+        ball.x + ball.size < (paddle.x + paddleHitboxWidth * 11 + hitboxPadding)&& // also adding extra so that the right side is forgiving
         ball.y + ball.size > paddle.y
 )
 {
@@ -252,8 +254,8 @@ function moveBall() {
         column.forEach(brick => {
             if(brick.visible) {
                 if(
-                    ball.x - ball.size > (brick.x - 15) && //Left brick side check. Subtracting extra because the collision was off for some reason
-                    ball.x + ball.size < (brick.x + brick.w + 15)&& //Right brick side check. Same as above
+                    ball.x - ball.size > (brick.x - hitboxPadding) && //Left brick side check. Subtracting extra because the collision was off for some reason
+                    ball.x + ball.size < (brick.x + brick.w + hitboxPadding)&& //Right brick side check. Same as above
                     ball.y + ball.size > brick.y && //Top brick side check
                     ball.y - ball.size < brick.y + brick.h //Bottom brick side check
                 ){
