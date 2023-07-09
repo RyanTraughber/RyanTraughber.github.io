@@ -136,105 +136,115 @@ function moveBall() {
     }
     //Paddle collision for each section of the paddle
     if( //far left paddle
-        ball.x - ball.size > (paddle.x - 15) && //Subtracting extra because the collision was off for some reason on the sides
-        ball.x + ball.size < (paddle.x) &&
+        ball.x > (paddle.x - 15) && //Subtracting extra because the collision was off for some reason on the sides
+        ball.x < (paddle.x) &&
         ball.y + ball.size > paddle.y
     ){
         ball.dy = -ball.speed;
-        angle = Math.PI * 10 /11;
+        angle = Math.PI * 11 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //one away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 8) && 
+        ball.x > (paddle.x - 15) &&
+        ball.x < (paddle.x + paddle.w + 7.27) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 9 /11;
+        angle = Math.PI * 10 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //two away from far left   
-        ball.x - ball.size > (paddle.x - 15) && 
-        ball.x + ball.size < (paddle.x + paddle.w + 16) && 
+        ball.x > (paddle.x - 15) && 
+        ball.x < (paddle.x + paddle.w + 14.54) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 8 /11;
+        angle = Math.PI * 9 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //three away from far left   
-        ball.x - ball.size > (paddle.x - 15) && 
-        ball.x + ball.size < (paddle.x + paddle.w + 24)&& 
+        ball.x > (paddle.x - 15) && 
+        ball.x < (paddle.x + paddle.w + 21.81)&& 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 7 /11;
+        angle = Math.PI * 8 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //four away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 40) && 
+        ball.x > (paddle.x - 15) &&
+        ball.x < (paddle.x + paddle.w + 29.08) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 6 /11;
+        angle = Math.PI * 7 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //five away from far left   
-        ball.x - ball.size > (paddle.x - 15) && 
-        ball.x + ball.size < (paddle.x + paddle.w + 40) && 
+        ball.x > (paddle.x - 15) && 
+        ball.x < (paddle.x + paddle.w + 36.35) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 5 /11;
+        angle = Math.PI * 6 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     } else if ( //six away from far left   
-        ball.x - ball.size > (paddle.x - 15) && 
-        ball.x + ball.size < (paddle.x + paddle.w + 48) && 
+        ball.x > (paddle.x - 15) && 
+        ball.x < (paddle.x + paddle.w + 43.62) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 4 /11;
+        angle = Math.PI * 5 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //seven away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 56) &&
+        ball.x > (paddle.x - 15) &&
+        ball.x < (paddle.x + paddle.w + 50.89) &&
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 3 /11;
+        angle = Math.PI * 4 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //eight away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 64) && 
+        ball.x > (paddle.x - 15) &&
+        ball.x < (paddle.x + paddle.w + 58.16) && 
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 2 /11;
+        angle = Math.PI * 3 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
     }else if ( //nine away from far left   
-        ball.x - ball.size > (paddle.x - 15) &&
-        ball.x + ball.size < (paddle.x + paddle.w + 72 + 15)&& // also adding extra so that the right side is forgiving
+        ball.x > (paddle.x - 15) &&
+        ball.x < (paddle.x + paddle.w + 65.43)&&
         ball.y + ball.size > paddle.y
     )
     {
         ball.dy = -ball.speed;
-        angle = Math.PI * 1 /11;
+        angle = Math.PI * 2 /12;
         ball.dx = ball.speed * Math.cos(angle);
         ball.dy = -ball.speed * Math.sin(angle);
-    }
+    }else if ( //10 away from far left   
+        ball.x - ball.size > (paddle.x - 15) &&
+        ball.x + ball.size < (paddle.x + paddle.w + 72.7 + 15)&& // also adding extra so that the right side is forgiving
+        ball.y + ball.size > paddle.y
+)
+{
+        ball.dy = -ball.speed;
+        angle = Math.PI * 1 /12;
+        ball.dx = ball.speed * Math.cos(angle);
+        ball.dy = -ball.speed * Math.sin(angle);
+}
 
 
     //Brick collision
