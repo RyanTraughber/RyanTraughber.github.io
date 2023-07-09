@@ -32,8 +32,7 @@ const paddle = {
     w: 80,
     h: 10,
     speed: 4,
-    dx: 0,
-    numPaddles: 10
+    dx: 0
 };
 
 //Create brick props
@@ -259,8 +258,16 @@ function moveBall() {
                     ball.y + ball.size > brick.y && //Top brick side check
                     ball.y - ball.size < brick.y + brick.h //Bottom brick side check
                 ){
-                    ball.dy *= -1;
-                    brick.visible = false;
+                    if (
+                        ball.y > brick.y && //see if the middle of the ball is higher than the bottom of the brick
+                        ball.y < brick.y + brick.h //see if the middle of the ball is lower than the top of the brick
+                        ){ 
+                            ball.dx *= -1; // if it is both then change the x direction
+                    } else { //if it's didn't hit the side of the brick and it already went through the brick hit detection, then it must have hit the top or bottom.
+                        ball.dy *= -1; //so change the y direction
+                    }
+                    //then no matter which part of the brick it hit, disable it and increase the score
+                    brick.visible = false; 
 
                     increaseScore();
                 }
@@ -272,6 +279,13 @@ function moveBall() {
     if(ball.y + ball.size > canvas.height) {
         showAllBricks();
         score = 0;
+
+        //reset ball
+        ball.x = canvas.width / 2,
+        ball.y = canvas.height / 2,
+        ball.speed = 3,
+        ball.dx = 0,
+        ball.dy = 1
     }
 }
 
@@ -281,6 +295,10 @@ function increaseScore() {
 
     if(score % (brickRowCount * brickColumnCount) === 0) {
         showAllBricks();
+        //increase speed
+        ball.speed += 1;
+        ball.dx += 1;
+        ball.dy += 1;
     }
 
     //set highscore
