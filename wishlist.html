@@ -4,10 +4,19 @@
     <title>Ryan :)</title>
     <!-- Browser tab picture -->
     <link rel="icon" href="MeAsCrocFullyFilledEyeCircle.png">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content-="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="styleForWishlist.css">
+    </head>
+
 <body>
 
     <!--top text-->
-    <div style="text-align: center;"><b>Please enter your steam ID</b></div>
+    <div style="text-align: center;"><b>Please enter your Steam ID</b></div>
 
     <!--text box to enter ID into-->
     <label for="SteamID">Steam ID:</label>
@@ -15,8 +24,22 @@
     placeholder="Croc49">
     <button onclick="getSteamID(SteamID);">Submit</button>
 
-    <p id="testText">Test</p>
+    <p id="testText"></p>
+
+    <div id="fileUpload" style="display: none" class="fileUpload" >    
+        <input type="file" id="fileInput" accept=".json">
+        <button id="fetchButton">Submit</button>
+    </div>
+
+    <div id="displayGames" class="displayGames">
+        <div id="firstGame" class="column left"></div>
+
+        <div id="secondGame"class="column middle"></div>
+
+        <div id="gameList" class="column right"></div>
+    </div>
 
     <script src="scriptForWishlist.js"></script>
+
 </body>
 </html>
