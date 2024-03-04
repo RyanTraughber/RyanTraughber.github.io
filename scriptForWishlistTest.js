@@ -10,7 +10,7 @@ let scores = {};
 
 function getSteamID (){
 // URL of the JSON object
-const url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=0EF9922A6CD83DE11BA2CBDB53C2B81C&steamids=76561197960435530';
+const url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=0EF9922A6CD83DE11BA2CBDB53C2B81C&steamids=76561197960435530';
 
 // Fetch the JSON data
 fetch(url)
