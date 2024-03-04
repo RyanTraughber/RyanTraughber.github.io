@@ -9,27 +9,20 @@ let comparisonIndex = 0;
 let scores = {};
 
 function getSteamID (){
-// URL of the JSON object
-const url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=0EF9922A6CD83DE11BA2CBDB53C2B81C&steamids=76561197960435530';
+    const textWriting = document.getElementById("testText");
+    const IDPls = document.getElementById("SteamID").value;
+    let link = "";
 
-// Fetch the JSON data
-fetch(url)
-  .then(response => {
-    // Check if the response is successful
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    // Parse the JSON response
-    return response.json();
-  })
-  .then(data => {
-    // Work with the JSON data
-    console.log(data);
-  })
-  .catch(error => {
-    // Handle any errors
-    console.error('There was a problem fetching the data:', error);
-  });
+        if(IDPls.length === 17) {
+            link += "https://store.steampowered.com/wishlist/profiles/" + IDPls + "/wishlistdata/";
+        } else {
+            link += "https://store.steampowered.com/wishlist/id/" + IDPls + "/wishlistdata/";
+        }
+
+
+    const testThis = 'target="_blank"'
+
+    textWriting.innerHTML = "Go " + '<a href="' + link + '"' + testThis + '">here</a>' + ", right click, save as, save it.";
 
     toggleUpload();
 }
