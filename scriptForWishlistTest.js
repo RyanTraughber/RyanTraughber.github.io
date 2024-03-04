@@ -10,7 +10,7 @@ let scores = {};
 
 function getSteamID (){
 // URL of the JSON object
-const url = 'http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json';
+const url = 'https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json';
 
 // Fetch the JSON data
 fetch(url)
