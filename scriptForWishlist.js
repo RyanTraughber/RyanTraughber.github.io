@@ -29,7 +29,7 @@ const IDPls = document.getElementById("SteamID").value;
 
 
 // URL of the JSON object
-const url = 'http://34.127.125.133:3000/data?IDPls=' + IDPls;
+const url = 'https://34.127.125.133/data?IDPls=' + IDPls;
 
 // Fetch the JSON data
 fetch(url)
