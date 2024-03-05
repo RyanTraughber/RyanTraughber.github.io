@@ -8,92 +8,84 @@ let comparisons = [];
 let comparisonIndex = 0;
 let scores = {};
 
-function getSteamID (){
-    const textWriting = document.getElementById("testText");
-    const IDPls = document.getElementById("SteamID").value;
-    let link = "";
+// Allows you to press enter instead of having to click Submit
+var input = document.getElementById("SteamID");
 
-        if(IDPls.length === 17) {
-            link += "https://store.steampowered.com/wishlist/profiles/" + IDPls + "/wishlistdata/";
-        } else {
-            link += "https://store.steampowered.com/wishlist/id/" + IDPls + "/wishlistdata/";
-        }
-
-
-    const testThis = 'target="_blank"'
-
-    textWriting.innerHTML = "Go " + '<a href="' + link + '"' + testThis + '">here</a>' + ", right click, save as, save it.";
-
-    toggleUpload();
-}
-
-function uploadFile() {
-    document.getElementById('fetchButton').addEventListener('click', function() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-
-        if (!file) {
-            console.error('No file selected.');
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function(event) {
-            const jsonContent = event.target.result;
-            console.log('JSON data:', jsonContent); // Log JSON content to see what's being read
-
-            try {
-                const jsonData = JSON.parse(jsonContent);
-                console.log('Parsed JSON data:', jsonData); // Log parsed JSON data
-
-                // Function to recursively extract "name" and "capsule" fields and count properties
-                function extractFieldsAndCount(obj) {
-                    // If the input is an object
-                    if (typeof obj === 'object' && obj !== null) {
-                        // Check if it has "name" and "capsule" fields
-                        if ('name' in obj && 'capsule' in obj) {
-                            console.log("Name:", obj.name);
-                            console.log("Capsule:", obj.capsule);
-                            console.log();
-                            // Push name and capsule into their respective arrays
-                            names.push(obj.name);
-                            capsules.push(obj.capsule);
-                        }
-                        // Recursively call extractFields for nested properties
-                        for (let key in obj) {
-                            extractFieldsAndCount(obj[key]);
-                        }
-                    }
-                }
-
-                // Call extractFields to start extracting "name" and "capsule" fields
-                extractFieldsAndCount(jsonData);
-
-                // Log the arrays
-                console.log("Names:", names);
-                console.log("Capsules:", capsules);
-
-                displayTwoGames();
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-            }
-        };
-
-        reader.readAsText(file);
-
-        
-
+    // Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function(event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("SteamButton").click();
+      }
     });
-}
+
+function getSteamID (){
+
+// Get steam id from user
+const IDPls = document.getElementById("SteamID").value;
 
 
-function toggleUpload () {
-    var buttonAndStuff= document.getElementById("fileUpload");
-    if (buttonAndStuff.style.display === "none") {
-      buttonAndStuff.style.display = "block";
-      uploadFile();
+// URL of the JSON object
+const url = 'https://34.127.125.133/data?IDPls=' + IDPls;
+
+// Fetch the JSON data
+fetch(url)
+  .then(response => {
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    // Parse the JSON response
+    return response.json();
+  })
+  .then(data => {
+    // Work with the JSON data
+    const jsonContent = data;
+    console.log('JSON data:', jsonContent); // Log JSON content to see what's being read
+
+    try {
+        console.log('Parsed JSON data:', jsonContent); // Log parsed JSON data
+
+        // Function to recursively extract "name" and "capsule" fields and count properties
+        function extractFieldsAndCount(obj) {
+            // If the input is an object
+            if (typeof obj === 'object' && obj !== null) {
+                // Check if it has "name" and "capsule" fields
+                if ('name' in obj && 'capsule' in obj) {
+                    console.log("Name:", obj.name);
+                    console.log("Capsule:", obj.capsule);
+                    console.log();
+                    // Push name and capsule into their respective arrays
+                    names.push(obj.name);
+                    capsules.push(obj.capsule);
+                }
+                // Recursively call extractFields for nested properties
+                for (let key in obj) {
+                    extractFieldsAndCount(obj[key]);
+                }
+            }
+        }
+
+        // Call extractFields to start extracting "name" and "capsule" fields
+        extractFieldsAndCount(jsonContent);
+
+        // Log the arrays
+        console.log("Names:", names);
+        console.log("Capsules:", capsules);
+
+        displayTwoGames();
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+    }
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error('There was a problem fetching the data:', error);
+  });
+
 }
 
 function displayTwoGames() {

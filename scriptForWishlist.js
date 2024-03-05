@@ -26,28 +26,25 @@ function getSteamID (){
 
 // Get steam id from user
 const IDPls = document.getElementById("SteamID").value;
+let link = "";
+
+if(IDPls.length === 17) {
+    link += "https://store.steampowered.com/wishlist/profiles/" + IDPls + "/wishlistdata/";
+} else {
+    link += "https://store.steampowered.com/wishlist/id/" + IDPls + "/wishlistdata/";
+}
 
 
-// URL of the JSON object
-const url = 'https://34.127.125.133/data?IDPls=' + IDPls;
-
-// Fetch the JSON data
-fetch(url)
+fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(link)}`)
   .then(response => {
-    // Check if the response is successful
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    // Parse the JSON response
-    return response.json();
+    if (response.ok) return response.json();
+    throw new Error('Network response was not ok.');
   })
   .then(data => {
-    // Work with the JSON data
-    const jsonContent = data;
-    console.log('JSON data:', jsonContent); // Log JSON content to see what's being read
-
+    const parsedData = JSON.parse(data.contents);
+    // Now you can work with the parsed data
     try {
-        console.log('Parsed JSON data:', jsonContent); // Log parsed JSON data
+        console.log('Parsed JSON data:', parsedData); // Log parsed JSON data
 
         // Function to recursively extract "name" and "capsule" fields and count properties
         function extractFieldsAndCount(obj) {
@@ -70,7 +67,7 @@ fetch(url)
         }
 
         // Call extractFields to start extracting "name" and "capsule" fields
-        extractFieldsAndCount(jsonContent);
+        extractFieldsAndCount(parsedData);
 
         // Log the arrays
         console.log("Names:", names);
@@ -80,10 +77,10 @@ fetch(url)
     } catch (error) {
         console.error('Error parsing JSON:', error);
     }
+    console.log(parsedData);
   })
   .catch(error => {
-    // Handle any errors
-    console.error('There was a problem fetching the data:', error);
+    console.error('Error fetching data:', error);
   });
 
 }
